@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Portfolio & Live Resume Builder</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css"/>
+  <style>
+    :root {
+      /* Light mode colors */
+      --primary-color: #6D5D4B;  /* Warm taupe */
+      --primary-rgb: 109, 93, 75;
+      --secondary-color: #9B8B7A; /* Light taupe */
+      --accent: #EBE6E0;        /* Eggshell */
+      --accent-rgb: 235, 230, 224;
+      --background: #FFFCF7;    /* Cream white */
+      --surface: #F5F1EA;      /* Light eggshell */
+      --text: #463E33;         /* Deep brown */
+      --text-rgb: 70, 62, 51;
+      --text-light: #8C7B6B;   /* Muted brown */
+      --border: rgba(109, 93, 75, 0.1);
+      --shadow: rgba(109, 93, 75, 0.1);
+      --hover: #847264;        /* Medium brown */
+      --success: #7C9B8B;      /* Sage green */
+      --error: #C17C7C;        /* Dusty rose */
+    }
+
+    [data-theme="dark"] {
+      /* Dark mode colors */
+      --primary-color: #EBE6E0;  /* Eggshell */
+      --primary-rgb: 235, 230, 224;
+      --secondary-color: #9B8B7A; /* Light taupe */
+      --accent: #6D5D4B;        /* Warm taupe */
+      --accent-rgb: 109, 93, 75;
+      --background: #2A2420;    /* Deep brown */
+      --surface: #3C332C;      /* Rich brown */
+      --text: #EBE6E0;         /* Eggshell */
+      --text-rgb: 235, 230, 224;
+      --text-light: #BFB3A8;   /* Light eggshell */
+      --border: rgba(235, 230, 224, 0.1);
+      --shadow: rgba(0, 0, 0, 0.2);
+      --hover: #D8D0C7;        /* Light cream */
+      --success: #8FAA9D;      /* Light sage */
+      --error: #D19191;        /* Light rose */
+    }
+
+    body {
+      background-color: var(--background);
+      color: var(--text);
+      transition: all 0.3s ease;
+    }
+
+    .nav-link {
+      color: var(--text);
+    }
+
+    .nav-link:hover {
+      color: var(--hover);
+    }
+
+    .nav-link::after {
+      background: var(--primary-color);
+    }
+
+    .logo a {
+      background: var(--primary-color);
+      color: var(--background);
+    }
+
+    .logo a:hover {
+      background: var(--hover);
+    }
+
+    .theme-btn {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .theme-btn:hover {
+      background: var(--accent);
+      color: var(--text);
+      border-color: var(--primary-color);
+    }
+
+    .badge-animated {
+      background: linear-gradient(90deg, var(--surface) 60%, rgba(var(--accent-rgb), 0.2) 100%);
+      color: var(--primary-color);
+      border: 1px solid var(--border);
+    }
+
+    .badge-icon {
+      color: var(--primary-color);
+    }
+
+    .social-link {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 8px var(--shadow);
+    }
+
+    .social-link:hover {
+      background: var(--primary-color);
+      color: var(--background);
+      border-color: var(--primary-color);
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+
+    .skill-icon {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1.2rem;
+      border-radius: 16px;
+      text-align: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px var(--shadow);
+    }
+
+    .skill-icon:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px var(--shadow);
+      border-color: var(--primary-color);
+      background: var(--background);
+    }
+
+    .skill-icon div {
+      margin-top: 0.75rem;
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    button {
+      background: var(--primary-color);
+      color: var(--background);
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+
+    button:hover {
+      background: var(--hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+
+    input, textarea {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 8px;
+      padding: 0.8rem 1rem;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+      background: var(--background);
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px var(--shadow);
+    }
+
+    .project-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 24px var(--shadow);
+      border-color: var(--primary-color);
+    }
+
+    .project-overlay {
+      background: rgba(var(--primary-rgb), 0.95);
+    }
+
+    .footer {
+      background: var(--accent);
+      padding: 4rem 0 1.5rem;
+      margin-top: 4rem;
+      border-top: 1px solid rgba(var(--text-rgb), 0.1);
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .footer-sections {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-section h3 {
+      color: var(--text);
+      font-size: 1.25rem;
+      margin-bottom: 1.25rem;
+      font-weight: 600;
+      position: relative;
+      padding-bottom: 0.75rem;
+    }
+
+    .footer-section h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 2px;
+      background: var(--primary-color);
+      border-radius: 2px;
+    }
+
+    .footer-about {
+      color: var(--text);
+      opacity: 0.8;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .footer-social-link {
+      color: var(--text);
+      opacity: 0.8;
+      transition: all 0.3s;
+      padding: 0.5rem;
+      border-radius: 8px;
+      background: rgba(var(--text-rgb), 0.05);
+    }
+
+    .footer-social-link:hover {
+      opacity: 1;
+      transform: translateY(-3px);
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .footer-links li {
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-links a {
+      color: var(--text);
+      opacity: 0.8;
+      text-decoration: none;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .footer-links a:hover {
+      opacity: 1;
+      color: var(--primary-color);
+      transform: translateX(5px);
+    }
+
+    .footer-skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .footer-skills span {
+      background: rgba(var(--text-rgb), 0.05);
+      color: var(--text);
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      opacity: 0.8;
+      transition: all 0.3s;
+    }
+
+    .footer-skills span:hover {
+      opacity: 1;
+      background: var(--primary-color);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .footer-contact p {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text);
+      opacity: 0.8;
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-bottom {
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(var(--text-rgb), 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .copyright {
+      color: var(--text);
+      opacity: 0.8;
+      font-size: 0.875rem;
+    }
+
+    .footer-bottom-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-bottom-links a {
+      color: var(--text);
+      opacity: 0.8;
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: all 0.3s;
+    }
+
+    .footer-bottom-links a:hover {
+      opacity: 1;
+      color: var(--primary-color);
+    }
+
+    @media (max-width: 768px) {
+      .footer {
+        padding: 3rem 0 1rem;
+      }
+      
+      .footer-sections {
+        gap: 2rem;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .footer-bottom-links {
+        justify-content: center;
+      }
+    }
+
+    /* Enhanced scrollbar */
+    ::-webkit-scrollbar {
+      width: 12px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--surface);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary-color);
+      border-radius: 6px;
+      border: 3px solid var(--surface);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--hover);
+    }
+  </style>
+</head>
+<body>
+      <nav class="container">
+      <div class="nav-wrapper">
+        <div class="logo">
+          <a href="#hero">MB</a>
+        </div>
+        <div class="nav-right">
+          <ul class="nav-links">
+            <li><a href="#hero" class="nav-link active">Home</a></li>
+            <li><a href="#about" class="nav-link">About</a></li>
+            <li><a href="#projects" class="nav-link">Projects</a></li>
+            <li><a href="#contact" class="nav-link">Contact</a></li>
+            <li><a href="#resume-builder" class="nav-link">Resume Builder</a></li>
+          </ul>
+          <button id="theme-toggle" aria-label="Toggle theme" class="theme-btn">
+            <span class="theme-icon">🌙</span>
+            <span class="theme-icon">☀️</span>
+          </button>
+          <button class="mobile-menu-btn" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+      <div class="scroll-indicator"></div>
+      <style>
+        nav.container {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          background: var(--background);
+          z-index: 1000;
+          padding: 0 1rem;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-wrapper {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0.75rem 0;
+          position: relative;
+          max-width: 1200px;
+          margin: 0 auto;
+        }
+
+        .nav-right {
+          display: flex;
+          align-items: center;
+          gap: 1.5rem;
+        }
+
+        .logo a {
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: var(--text);
+          text-decoration: none;
+          background: var(--primary-color);
+          padding: 0.4rem 0.8rem;
+          border-radius: 8px;
+          color: white;
+          transition: all 0.3s ease;
+          display: inline-block;
+        }
+
+        .logo a:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.2);
+        }
+
+        .nav-links {
+          display: flex;
+          gap: 2rem;
+          align-items: center;
+          margin: 0;
+          padding: 0;
+          list-style: none;
+        }
+
+        .nav-link {
+          color: var(--text);
+          text-decoration: none;
+          font-weight: 500;
+          position: relative;
+          padding: 0.5rem 0;
+          transition: color 0.3s ease;
+          font-size: 0.95rem;
+        }
+
+        .nav-link::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 0;
+          height: 2px;
+          background: var(--primary-color);
+          transition: width 0.3s ease;
+          border-radius: 2px;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+          width: 100%;
+        }
+
+        .theme-btn {
+          background: var(--accent);
+          border: none;
+          padding: 0.5rem;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          display: flex;
+          align-items: center;
+          gap: 0.25rem;
+          color: var(--text);
+        }
+
+        .theme-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .theme-icon {
+          font-size: 1rem;
+        }
+
+        .mobile-menu-btn {
+          display: none;
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0.5rem;
+          z-index: 100;
+        }
+
+        .mobile-menu-btn span {
+          display: block;
+          width: 24px;
+          height: 2px;
+          background: var(--text);
+          margin: 5px 0;
+          transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+          .mobile-menu-btn {
+            display: block;
+          }
+
+          .nav-links {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            height: 100vh;
+            width: 100%;
+            background: var(--background);
+            flex-direction: column;
+            justify-content: center;
+            transition: right 0.3s ease;
+            z-index: 99;
+          }
+
+          .nav-links.active {
+            right: 0;
+          }
+
+          .mobile-menu-btn.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+          }
+
+          .mobile-menu-btn.active span:nth-child(2) {
+            opacity: 0;
+          }
+
+          .mobile-menu-btn.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+          }
+        }
+
+        main {
+          padding-top: 70px;
+        }
+
+        #hero {
+          min-height: calc(100vh - 70px);
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          padding: 2rem 0;
+        }
+
+        .profile-pic {
+          width: 150px;
+          height: 150px;
+          border-radius: 50%;
+          object-fit: cover;
+          margin-bottom: 1.5rem;
+          border: 3px solid var(--primary-color);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .scroll-indicator {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          height: 3px;
+          background: var(--primary-color);
+          width: 0;
+          transition: width 0.3s ease;
+        }
+      </style>
+    </nav>
+  <main>
+    <!-- Hero Section -->
+    <section id="hero" class="container" data-aos="fade-up">
+      <img src="assets/IMG_20250709_031958.jpg" alt="Profile" class="profile-pic"/>
+      <h1>Muhammad Moin Bukhari</h1>
+      <h2 class="profession-title">Software Developer</h2>
+      <div class="unique-professional-tagline">
+      <style>
+        .profession-title {
+          color: var(--text-light);
+          font-size: 1.25rem;
+          margin: 0.5rem 0 1rem;
+          font-weight: 500;
+          letter-spacing: 0.5px;
+          position: relative;
+          padding-bottom: 0.75rem;
+        }
+
+        .profession-title::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 40px;
+          height: 2px;
+          background: var(--primary-color);
+          border-radius: 2px;
+        }
+      </style>
+        <span class="badge-animated">
+          <svg class="badge-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="#4f8cff" stroke-width="2" fill="none"/>
+            <path d="M8 12l2 2 4-4" stroke="#4f8cff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="badge-text">Verified Professional</span>
+        </span>
+        <span class="animated-roles">
+          <span class="role">Software Engineer</span>
+          <span class="role">Problem Solver</span>
+          <span class="role">Tech Enthusiast</span>
+          <span class="role">Team Player</span>
+        </span>
+      </div>
+      <div class="social-media-availability" style="margin-top: 22px; text-align: center;">
+        <span class="social-heading" style="font-size: 1.15em; color: var(--text); font-weight: 500; display: block; margin-bottom: 16px;">
+          Let's Connect & Create Something Amazing Together
+        </span>
+        <div class="social-icons" style="margin-top: 10px; display: flex; justify-content: center; gap: 24px;">
+          <!-- LinkedIn -->
+          <a href="https://www.linkedin.com/in/moin-bukhari-1249ab32a/" target="_blank" aria-label="LinkedIn" class="social-link" style="color: #0A66C2; display: inline-flex; align-items: center; font-size: 1.6em; padding: 12px; border-radius: 12px; transition: all 0.3s ease;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.268c-.966 0-1.75-.784-1.75-1.75s.784-1.75 1.75-1.75 1.75.784 1.75 1.75-.784 1.75-1.75 1.75zm13.5 11.268h-3v-5.604c0-1.337-.025-3.063-1.868-3.063-1.87 0-2.156 1.46-2.156 2.968v5.699h-3v-10h2.881v1.367h.041c.401-.761 1.381-1.563 2.844-1.563 3.042 0 3.604 2.003 3.604 4.605v5.591z"/>
+            </svg>
+          </a>
+          <!-- Instagram -->
+          <a href="https://www.instagram.com/moinbukhari" target="_blank" aria-label="Instagram" class="social-link" style="color: #E4405F; display: inline-flex; align-items: center; font-size: 1.6em; padding: 12px; border-radius: 12px; transition: all 0.3s ease;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.334 3.608 1.308.974.974 1.246 2.241 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.334 2.633-1.308 3.608-.974.974-2.241 1.246-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.334-3.608-1.308-.974-.974-1.246-2.241-1.308-3.608-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.062-1.366.334-2.633 1.308-3.608.974-.974 2.241-1.246 3.608-1.308 1.266-.058 1.646-.07 4.85-.07zm0-2.163c-3.259 0-3.667.012-4.947.07-1.276.058-2.687.334-3.678 1.325-.991.991-1.267 2.402-1.325 3.678-.058 1.28-.07 1.688-.07 4.947s.012 3.667.07 4.947c.058 1.276.334 2.687 1.325 3.678.991.991 2.402 1.267 3.678 1.325 1.28.058 1.688.07 4.947.07s3.667-.012 4.947-.07c1.276-.058 2.687-.334 3.678-1.325.991-.991 1.267-2.402 1.325-3.678.058-1.28.07-1.688.07-4.947s-.012-3.667-.07-4.947c-.058-1.276-.334-2.687-1.325-3.678-.991-.991-2.402-1.267-3.678-1.325-1.28-.058-1.688-.07-4.947-.07zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a3.999 3.999 0 1 1 0-7.998 3.999 3.999 0 0 1 0 7.998zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
+            </svg>
+          </a>
+          <!-- Email -->
+          <a href="mailto:moin.bukhari345@gmail.com" aria-label="Email" class="social-link" style="color: #EA4335; display: inline-flex; align-items: center; font-size: 1.6em; padding: 12px; border-radius: 12px; transition: all 0.3s ease;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+      <style>
+        .unique-professional-tagline {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-top: 12px;
+        }
+        .badge-animated {
+          display: inline-flex;
+          align-items: center;
+          background: linear-gradient(90deg, #e0e7ff 60%, #4f8cff22 100%);
+          border-radius: 999px;
+          padding: 6px 18px 6px 10px;
+          font-weight: 600;
+          color: #4f8cff;
+          font-size: 1.1em;
+          margin-bottom: 8px;
+          box-shadow: 0 2px 8px rgba(79,140,255,0.08);
+          animation: badge-pop 0.8s cubic-bezier(.68,-0.55,.27,1.55);
+        }
+        .badge-icon {
+          margin-right: 8px;
+          animation: badge-spin 2s linear infinite;
+        }
+        @keyframes badge-pop {
+          0% { transform: scale(0.7); opacity: 0; }
+          70% { transform: scale(1.1); opacity: 1; }
+          100% { transform: scale(1); }
+        }
+        @keyframes badge-spin {
+          0% { transform: rotate(0deg);}
+          100% { transform: rotate(360deg);}
+        }
+        .animated-roles {
+          display: block;
+          min-height: 1.5em;
+          font-size: 1.15em;
+          color: var(--text);
+          font-family: 'Segoe UI', Arial, sans-serif;
+          font-weight: 500;
+          letter-spacing: 0.5px;
+          margin-top: 2px;
+          position: relative;
+          height: 1.5em;
+        }
+        .animated-roles .role {
+          position: absolute;
+          left: 0; right: 0;
+          opacity: 0;
+          animation: role-fade 8s linear infinite;
+        }
+        .animated-roles .role:nth-child(1) { animation-delay: 0s; }
+        .animated-roles .role:nth-child(2) { animation-delay: 2s; }
+        .animated-roles .role:nth-child(3) { animation-delay: 4s; }
+        .animated-roles .role:nth-child(4) { animation-delay: 6s; }
+        @keyframes role-fade {
+          0% { opacity: 0; transform: translateY(10px);}
+          5% { opacity: 1; transform: translateY(0);}
+          25% { opacity: 1; }
+          30% { opacity: 0; transform: translateY(-10px);}
+          100% { opacity: 0; }
+        }
+        .social-icons a {
+          transition: transform 0.18s, box-shadow 0.18s;
+        }
+        .social-icons a:hover {
+          transform: scale(1.18) translateY(-2px);
+          box-shadow: 0 2px 12px rgba(79,140,255,0.10);
+          filter: brightness(1.1);
+        }
+        .social-heading {
+          position: relative;
+          display: inline-block;
+          padding-bottom: 8px;
+        }
+        .social-heading::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 60px;
+          height: 3px;
+          background: var(--primary-color);
+          border-radius: 2px;
+        }
+        .social-link {
+          background: var(--accent);
+          box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .social-link:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+          background: var(--background);
+        }
+      </style>
+    </section>
+    <!-- About Section -->
+    <section id="about" class="container" data-aos="fade-up">
+      <h2>About Me</h2>
+      <p>I am a dedicated software developer skilled in web, mobile, and system programming, always eager to learn new technologies and solve real-world problems.</p>
+      <div class="skills-list" style="display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; margin-top: 32px;">
+        <div class="skill-icon" title="HTML"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML" width="48" height="48"><div>HTML</div></div>
+        <div class="skill-icon" title="CSS"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS" width="48" height="48"><div>CSS</div></div>
+        <div class="skill-icon" title="JavaScript"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" width="48" height="48"><div>JavaScript</div></div>
+        <div class="skill-icon" title="C++"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" alt="C++" width="48" height="48"><div>C++</div></div>
+        <div class="skill-icon" title="C#"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg" alt="C#" width="48" height="48"><div>C#</div></div>
+        <div class="skill-icon" title="Flutter"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg" alt="Flutter" width="48" height="48"><div>Flutter</div></div>
+        <div class="skill-icon" title="SQL"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="SQL" width="48" height="48"><div>SQL</div></div>
+        <div class="skill-icon" title="Linux"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" alt="Linux" width="48" height="48"><div>Linux</div></div>
+      </div>
+    </section>
+    <!-- Projects Section -->
+    <section id="projects" class="container" data-aos="fade-up">
+      <h2>Projects</h2>
+      <div class="project-cards">
+        <div class="project-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="project-image">
+            <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=240&q=80" alt="Project moin" />
+            <div class="project-overlay">
+              <button onclick="openModal('modal1')" class="view-project">View Details</button>
+            </div>
+          </div>
+          <div class="project-content">
+            <h3>Moin's Portfolio Website</h3>
+            <p>Personal portfolio and live resume builder web app.</p>
+            <div class="project-tech">
+              <span>HTML</span>
+              <span>CSS</span>
+              <span>JavaScript</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="project-image">
+            <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=240&q=80" alt="Project TaskMaster" />
+            <div class="project-overlay">
+              <button onclick="openModal('modal2')" class="view-project">View Details</button>
+            </div>
+          </div>
+          <div class="project-content">
+            <h3>TaskMaster</h3>
+            <p>A simple and elegant to-do list app to boost your productivity.</p>
+            <div class="project-tech">
+              <span>React</span>
+              <span>Node.js</span>
+              <span>MongoDB</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="project-image">
+            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=240&q=80" alt="Project SnapGallery" />
+            <div class="project-overlay">
+              <button onclick="openModal('modal3')" class="view-project">View Details</button>
+            </div>
+          </div>
+          <div class="project-content">
+            <h3>SnapGallery</h3>
+            <p>A beautiful photo gallery app to showcase your favorite moments.</p>
+            <div class="project-tech">
+              <span>Flutter</span>
+              <span>Firebase</span>
+              <span>Cloud Storage</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project Modals -->
+      <div class="modal" id="modal1">
+        <div class="modal-content">
+          <button class="close" aria-label="Close modal">&times;</button>
+          <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=600&q=80" alt="Project moin" />
+          <h3>Moin's Portfolio Website</h3>
+          <p>Personal portfolio and live resume builder web app. Built with HTML, CSS, and JavaScript. Features a beautiful UI, dark/light mode, and a live resume builder with PDF export.</p>
+          <div class="modal-links">
+            <a href="#" class="modal-btn" target="_blank">Live Demo</a>
+            <a href="#" class="modal-btn" target="_blank">Source Code</a>
+          </div>
+        </div>
+      </div>
+
+      <style>
+        .project-cards {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 2rem;
+          margin-top: 2rem;
+        }
+        .project-card {
+          background: var(--accent);
+          border-radius: 16px;
+          overflow: hidden;
+          transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .project-card:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        }
+        .project-image {
+          position: relative;
+          overflow: hidden;
+          aspect-ratio: 16/9;
+        }
+        .project-image img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.5s;
+        }
+        .project-card:hover .project-image img {
+          transform: scale(1.1);
+        }
+        .project-overlay {
+          position: absolute;
+          inset: 0;
+          background: rgba(0,0,0,0.7);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          transition: opacity 0.3s;
+        }
+        .project-card:hover .project-overlay {
+          opacity: 1;
+        }
+        .view-project {
+          background: var(--primary-color);
+          color: white;
+          border: none;
+          padding: 12px 24px;
+          border-radius: 8px;
+          font-weight: 600;
+          cursor: pointer;
+          transform: translateY(20px);
+          transition: transform 0.3s, background 0.3s;
+        }
+        .project-card:hover .view-project {
+          transform: translateY(0);
+        }
+        .view-project:hover {
+          background: #2563eb;
+        }
+        .project-content {
+          padding: 1.5rem;
+        }
+        .project-content h3 {
+          margin: 0 0 0.5rem 0;
+          font-size: 1.25rem;
+          color: var(--text);
+        }
+        .project-content p {
+          margin: 0 0 1rem 0;
+          color: var(--text);
+          opacity: 0.8;
+        }
+        .project-tech {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5rem;
+        }
+        .project-tech span {
+          background: var(--background);
+          color: var(--text);
+          padding: 4px 12px;
+          border-radius: 20px;
+          font-size: 0.875rem;
+        }
+        .modal {
+          display: none;
+          position: fixed;
+          inset: 0;
+          background: rgba(0,0,0,0.8);
+          z-index: 1000;
+          padding: 2rem;
+          overflow-y: auto;
+          opacity: 0;
+          transition: opacity 0.3s;
+        }
+        .modal.open {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 1;
+        }
+        .modal-content {
+          background: var(--background);
+          padding: 2rem;
+          border-radius: 16px;
+          max-width: 600px;
+          width: 100%;
+          position: relative;
+        }
+        .modal-content img {
+          width: 100%;
+          border-radius: 8px;
+          margin-bottom: 1.5rem;
+        }
+        .close {
+          position: absolute;
+          top: 1rem;
+          right: 1rem;
+          background: none;
+          border: none;
+          font-size: 1.5rem;
+          cursor: pointer;
+          color: var(--text);
+        }
+        .modal-links {
+          display: flex;
+          gap: 1rem;
+          margin-top: 1.5rem;
+        }
+        .modal-btn {
+          flex: 1;
+          text-align: center;
+          padding: 12px;
+          background: var(--primary-color);
+          color: white;
+          text-decoration: none;
+          border-radius: 8px;
+          font-weight: 600;
+          transition: background 0.3s;
+        }
+        .modal-btn:hover {
+          background: #2563eb;
+        }
+        @media (max-width: 768px) {
+          .project-cards {
+            grid-template-columns: 1fr;
+          }
+          .modal {
+            padding: 1rem;
+          }
+          .modal-content {
+            padding: 1.5rem;
+          }
+        }
+      </style>
+    </section>
+    <!-- Contact Section -->
+    <section id="contact" class="container" data-aos="fade-up">
+      <h2>Contact</h2>
+      <div class="contact-social-media" style="text-align:center; margin-bottom:32px;">
+        <div class="social-heading" style="font-size:1.15em; color:var(--text); font-weight:500; margin-bottom:24px;">
+          Connect With Me Across The Web
+        </div>
+        <div class="social-icons" style="display:flex; justify-content:center; gap:24px;">
+          <!-- LinkedIn -->
+          <a href="https://www.linkedin.com/in/moinbukhari" target="_blank" aria-label="LinkedIn" class="social-link" style="color:#0A66C2; display:inline-flex; align-items:center; font-size:1.6em; padding: 12px; border-radius: 12px; transition: all 0.3s ease;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.268c-.966 0-1.75-.784-1.75-1.75s.784-1.75 1.75-1.75 1.75.784 1.75 1.75-.784 1.75-1.75 1.75zm13.5 11.268h-3v-5.604c0-1.337-.025-3.063-1.868-3.063-1.87 0-2.156 1.46-2.156 2.968v5.699h-3v-10h2.881v1.367h.041c.401-.761 1.381-1.563 2.844-1.563 3.042 0 3.604 2.003 3.604 4.605v5.591z"/></svg>
+          </a>
+          <!-- Instagram -->
+          <a href="https://www.instagram.com/moinbukhari" target="_blank" aria-label="Instagram" class="social-link" style="color:#E4405F; display:inline-flex; align-items:center; font-size:1.6em; padding: 12px; border-radius: 12px; transition: all 0.3s ease;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.334 3.608 1.308.974.974 1.246 2.241 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.334 2.633-1.308 3.608-.974.974-2.241 1.246-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.334-3.608-1.308-.974-.974-1.246-2.241-1.308-3.608-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.062-1.366.334-2.633 1.308-3.608.974-.974 2.241-1.246 3.608-1.308 1.266-.058 1.646-.07 4.85-.07zm0-2.163c-3.259 0-3.667.012-4.947.07-1.276.058-2.687.334-3.678 1.325-.991.991-1.267 2.402-1.325 3.678-.058 1.28-.07 1.688-.07 4.947s.012 3.667.07 4.947c.058 1.276.334 2.687 1.325 3.678.991.991 2.402 1.267 3.678 1.325 1.28.058 1.688.07 4.947.07s3.667-.012 4.947-.07c1.276-.058 2.687-.334 3.678-1.325.991-.991 1.267-2.402 1.325-3.678.058-1.28.07-1.688.07-4.947s-.012-3.667-.07-4.947c-.058-1.276-.334-2.687-1.325-3.678-.991-.991-2.402-1.267-3.678-1.325-1.28-.058-1.688-.07-4.947-.07zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a3.999 3.999 0 1 1 0-7.998 3.999 3.999 0 0 1 0 7.998zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+          </a>
+          <!-- Email -->
+          <a href="mailto:moinbukhari@gmail.com" aria-label="Email" class="social-link" style="color:#EA4335; display:inline-flex; align-items:center; font-size:1.6em; padding: 12px; border-radius: 12px; transition: all 0.3s ease;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+      <form id="contact-form" class="contact-form" onsubmit="handleSubmit(event)">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required 
+                 pattern="[A-Za-z\s]{2,}"
+                 title="Name should contain at least 2 letters and no numbers"/>
+          <span class="error-message"></span>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required
+                 pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                 title="Please enter a valid email address"/>
+          <span class="error-message"></span>
+        </div>
+        
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" required
+                    minlength="10"
+                    title="Message should be at least 10 characters long"></textarea>
+          <span class="error-message"></span>
+        </div>
+        
+        <button type="submit" class="submit-btn">
+          <span class="btn-text">Send Message</span>
+          <svg class="btn-icon" viewBox="0 0 24 24" width="24" height="24">
+            <path fill="none" d="M0 0h24v24H0z"/>
+            <path d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"/>
+          </svg>
+        </button>
+      </form>
+
+      <style>
+        .contact-form {
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 2rem;
+          background: var(--accent);
+          border-radius: 16px;
+          box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+        .form-group {
+          margin-bottom: 1.5rem;
+        }
+        .form-group label {
+          display: block;
+          margin-bottom: 0.5rem;
+          font-weight: 500;
+          color: var(--text);
+        }
+        .form-group input,
+        .form-group textarea {
+          width: 100%;
+          padding: 0.75rem;
+          border: 2px solid transparent;
+          border-radius: 8px;
+          background: var(--background);
+          color: var(--text);
+          font-size: 1rem;
+          transition: all 0.3s;
+        }
+        .form-group textarea {
+          min-height: 150px;
+          resize: vertical;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+          outline: none;
+          border-color: var(--primary-color);
+          box-shadow: 0 0 0 4px rgba(79,140,255,0.1);
+        }
+        .form-group input:invalid,
+        .form-group textarea:invalid {
+          border-color: #ef4444;
+        }
+        .error-message {
+          display: none;
+          color: #ef4444;
+          font-size: 0.875rem;
+          margin-top: 0.25rem;
+        }
+        .submit-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          background: var(--primary-color);
+          color: white;
+          border: none;
+          padding: 1rem 2rem;
+          border-radius: 8px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s;
+          width: 100%;
+          justify-content: center;
+        }
+        .submit-btn:hover {
+          background: #2563eb;
+          transform: translateY(-2px);
+        }
+        .submit-btn:active {
+          transform: translateY(0);
+        }
+        .btn-icon {
+          width: 20px;
+          height: 20px;
+          fill: currentColor;
+          transition: transform 0.3s;
+        }
+        .submit-btn:hover .btn-icon {
+          transform: translateX(4px);
+        }
+        @media (max-width: 640px) {
+          .contact-form {
+            padding: 1.5rem;
+          }
+        }
+      </style>
+
+      <script>
+        function handleSubmit(event) {
+          event.preventDefault();
+          const form = event.target;
+          const submitBtn = form.querySelector('.submit-btn');
+          const btnText = submitBtn.querySelector('.btn-text');
+          
+          // Validate form
+          const inputs = form.querySelectorAll('input, textarea');
+          let isValid = true;
+          
+          inputs.forEach(input => {
+            if (!input.checkValidity()) {
+              isValid = false;
+              const errorMessage = input.nextElementSibling;
+              errorMessage.textContent = input.validationMessage;
+              errorMessage.style.display = 'block';
+            }
+          });
+          
+          if (!isValid) return;
+          
+          // Show loading state
+          submitBtn.disabled = true;
+          btnText.textContent = 'Sending...';
+          
+          // Simulate form submission
+          setTimeout(() => {
+            submitBtn.disabled = false;
+            btnText.textContent = 'Message Sent!';
+            form.reset();
+            
+            setTimeout(() => {
+              btnText.textContent = 'Send Message';
+            }, 3000);
+          }, 2000);
+        }
+        
+        // Real-time validation
+        document.querySelectorAll('.contact-form input, .contact-form textarea').forEach(input => {
+          input.addEventListener('input', () => {
+            const errorMessage = input.nextElementSibling;
+            if (input.checkValidity()) {
+              errorMessage.style.display = 'none';
+              input.style.borderColor = 'transparent';
+            } else {
+              errorMessage.textContent = input.validationMessage;
+              errorMessage.style.display = 'block';
+              input.style.borderColor = '#ef4444';
+            }
+          });
+        });
+      </script>
+    </section>
+    <!-- Resume Builder Section -->
+    <section id="resume-builder" class="container" data-aos="fade-up">
+      <h2>Live Resume Builder</h2>
+      <form id="resume-form">
+        <input type="text" name="name" placeholder="Name" required />
+        <input type="text" name="title" placeholder="Title" required />
+        <input type="text" name="education" placeholder="Education" required />
+        <input type="text" name="experience" placeholder="Experience" required />
+        <input type="text" name="skills" placeholder="Skills (comma separated)" required />
+        <input type="color" name="themeColor" value="#4f8cff" />
+        <select name="template">
+          <option value="template1">Template 1</option>
+          <option value="template2">Template 2</option>
+        </select>
+        <button type="button" id="export-pdf">Export as PDF</button>
+      </form>
+      <div id="resume-preview"></div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content container">
+      <div class="footer-sections">
+        <div class="footer-section">
+          <h3>Muhammad Moin Bukhari</h3>
+          <p class="footer-about">A passionate software developer dedicated to creating beautiful and functional web experiences.</p>
+          <div class="footer-social">
+            <a href="https://www.linkedin.com/in/moin-bukhari-1249ab32a/" target="_blank" aria-label="LinkedIn" class="footer-social-link">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.268c-.966 0-1.75-.784-1.75-1.75s.784-1.75 1.75-1.75 1.75.784 1.75 1.75-.784 1.75-1.75 1.75zm13.5 11.268h-3v-5.604c0-1.337-.025-3.063-1.868-3.063-1.87 0-2.156 1.46-2.156 2.968v5.699h-3v-10h2.881v1.367h.041c.401-.761 1.381-1.563 2.844-1.563 3.042 0 3.604 2.003 3.604 4.605v5.591z"/>
+              </svg>
+            </a>
+            <a href="https://www.instagram.com/moinbukhari" target="_blank" aria-label="Instagram" class="footer-social-link">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.334 3.608 1.308.974.974 1.246 2.241 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.334 2.633-1.308 3.608-.974.974-2.241 1.246-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.334-3.608-1.308-.974-.974-1.246-2.241-1.308-3.608-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.062-1.366.334-2.633 1.308-3.608.974-.974 2.241-1.246 3.608-1.308 1.266-.058 1.646-.07 4.85-.07zm0-2.163c-3.259 0-3.667.012-4.947.07-1.276.058-2.687.334-3.678 1.325-.991.991-1.267 2.402-1.325 3.678-.058 1.28-.07 1.688-.07 4.947s.012 3.667.07 4.947c.058 1.276.334 2.687 1.325 3.678.991.991 2.402 1.267 3.678 1.325 1.28.058 1.688.07 4.947.07s3.667-.012 4.947-.07c1.276-.058 2.687-.334 3.678-1.325.991-.991 1.267-2.402 1.325-3.678.058-1.28.07-1.688.07-4.947s-.012-3.667-.07-4.947c-.058-1.276-.334-2.687-1.325-3.678-.991-.991-2.402-1.267-3.678-1.325-1.28-.058-1.688-.07-4.947-.07zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a3.999 3.999 0 1 1 0-7.998 3.999 3.999 0 0 1 0 7.998zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
+              </svg>
+            </a>
+            <a href="mailto:moin.bukhari345@gmail.com" aria-label="Email" class="footer-social-link">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="#resume-builder">Resume Builder</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Skills</h3>
+          <div class="footer-skills">
+            <span>HTML</span>
+            <span>CSS</span>
+            <span>JavaScript</span>
+            <span>React</span>
+            <span>Node.js</span>
+            <span>Flutter</span>
+          </div>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Contact Info</h3>
+          <div class="footer-contact">
+            <p>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+              </svg>
+                             <a href="mailto:moin.bukhari345@gmail.com">moin.bukhari345@gmail.com</a>
+            </p>
+            <p>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/>
+              </svg>
+                             Islamabad, Pakistan
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <div class="copyright">
+          © 2025 Muhammad Moin Bukhari. All rights reserved.
+        </div>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/resume-builder.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script>
+    AOS.init();
+    // Typewriter effect for tagline
+    // typeWriter(document.getElementById('typewriter'), 'Web Developer | Designer | Creator');
+  </script>
+</body>
+</html>
